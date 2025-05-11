@@ -53,7 +53,7 @@ public class Salon {
     private LocalTime closeTime;
 
 
-    public SalonDTO toEntity(){
+    public SalonDTO toDTO(){
         return new SalonDTO(this.id, this.name, this.images, this.address, this.phoneNumber, this.email, this.city, this.ownerId, this.openTime, this.closeTime);
     }
 

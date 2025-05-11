@@ -19,50 +19,48 @@ public class SalonServiceImpl implements SalonService {
     
     @Override
     public Salon createSalon(SalonDTO salonDTO, UserDTO userDTO) {
-        return salonRepository.save(salonDTO.toEntity());
+        Salon salon = salonRepository.save(salonDTO.toEntity());
+        salon.setOwnerId(userDTO.getId());
+        return salon;
     }
 
     @Override
-    public Salon updateSalon(SalonDTO salonDTO, Long id) {
+    public Salon updateSalon(SalonDTO salonDTO,UserDTO user, Long id) throws Exception {
         Salon salon = salonRepository.findById(id).orElse(null);
-        if (salon != null) {
+        if (salon != null && salon.getOwnerId().equals(user.getId())) {
             salon.setName(salonDTO.getName());
             salon.setAddress(salonDTO.getAddress());
             salon.setPhoneNumber(salonDTO.getPhoneNumber());
             salon.setCity(salonDTO.getCity());
             salon.setImages(salonDTO.getImages());
             salon.setEmail(salonDTO.getEmail());
-            salon.setOwnerId(salon.getOwnerId());
+            salon.setOwnerId(user.getId());
             salon.setOpenTime(salonDTO.getOpenTime());
             salon.setCloseTime(salonDTO.getCloseTime());
             return salonRepository.save(salon);
         }
-        return null;
+        throw new Exception("Salon not found");
     }
 
 
     @Override
     public List<Salon> getAllSalons() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllSalons'");
+        return salonRepository.findAll();
     }
 
     @Override
-    public Salon getSalonById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSalonById'");
+    public Salon getSalonById(Long id) throws Exception {
+        return salonRepository.findById(id).orElseThrow(()-> new Exception("Salon not found"));
     }
 
     @Override
     public List<Salon> searchSalonByCity(String city) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'searchSalonByCity'");
+        return salonRepository.searchSalons(city);
     }
 
     @Override
     public Salon getSalonByOwnerId(Long ownerId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSalonByOwnerId'");
+        return salonRepository.findByOwnerId(ownerId);
     }
     
 }

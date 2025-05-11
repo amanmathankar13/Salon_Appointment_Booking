@@ -9,9 +9,9 @@ import com.sab.salon_service.payload.dto.UserDTO;
 public interface SalonService {
 
     Salon createSalon(SalonDTO salonDTO, UserDTO userDTO);
-    Salon updateSalon(SalonDTO salonDTO, Long id);
+    Salon updateSalon(SalonDTO salonDTO, UserDTO user, Long id) throws Exception;
     List<Salon> getAllSalons();
-    Salon getSalonById(Long id);
+    Salon getSalonById(Long id) throws Exception;
     List<Salon> searchSalonByCity(String city);
     Salon getSalonByOwnerId(Long ownerId);
 
