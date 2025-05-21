@@ -8,7 +8,8 @@
             "mainClass": "com.sab.booking_service.BookingServiceApplication",
             "projectName": "Booking_Service",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=51418 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Booking_Service"
         },
         {
             "type": "java",
@@ -28,7 +29,8 @@
             "mainClass": "com.sab.payment_service.PaymentServiceApplication",
             "projectName": "Payment_Service",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=51476 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Payment_Service"
         },
         {
             "type": "java",
@@ -38,7 +40,8 @@
             "mainClass": "com.sab.salon_service.SalonserviceApplication",
             "projectName": "Salonservice",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=51459 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Salonservice"
         },
         {
             "type": "java",
@@ -58,7 +61,8 @@
             "mainClass": "com.sab.service_registry.ServiceRegistryApplication",
             "projectName": "Service_Registry",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=51442 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Service_Registry"
         },
         {
             "type": "java",
@@ -67,6 +71,17 @@
             "cwd": "${workspaceFolder}",
             "mainClass": "com.sab.user_service.UserserviceApplication",
             "projectName": "Userservice",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=51453 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Userservice"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-GatewayServiceApplication<Gateway_Service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.sab.gateway.GatewayServiceApplication",
+            "projectName": "Gateway_Service",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }

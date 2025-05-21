@@ -1,0 +1,50 @@
+server:
+  port: 9007
+spring:
+  application:
+    name: Gateway_Service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: BOOKING_SERVICE
+          uri: lb://BOOKING_SERVICE
+          predicates:
+            - Path=/bookings/**
+
+        - id: PAYMENT_SERVICE
+          uri: lb://PAYMENT_SERVICE
+          predicates:
+            - Path=/payment/**
+
+        - id: CATEGORY_SERVICE
+          uri: lb://CATEGORY_SERVICE
+          predicates:
+            - Path=/category/**
+
+        - id: SALONSERVICE
+          uri: lb://SALONSERVICE
+          predicates:
+            - Path=/salons/**
+
+        - id: SERVICE_PROVIDING
+          uri: lb://SERVICE_PROVIDING
+          predicates:
+            - Path=/services-providing/**
+
+        - id: USERSERVICE
+          uri: lb://USERSERVICE
+          predicates:
+            - Path=/auth/**, /admin/user/**, /user/**
+
+
+eureka:
+    instance:
+        prefer-ip-address: true
+    client:
+        fetch-registry: true
+        register-with-eureka: true
+        service-url:
+            defaultZone: http://localhost:9006/eureka
