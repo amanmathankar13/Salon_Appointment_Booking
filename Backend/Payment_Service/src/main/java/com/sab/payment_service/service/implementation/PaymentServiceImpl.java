@@ -37,8 +37,6 @@ public class PaymentServiceImpl implements PaymentService {
     @Value("${razorpay.api.secret}")
     private String razorpayApiSecret;
 
-    @Value("${stripe.api.secret}")
-    private String stripeApiSecret;
 
     @Override
     public PaymentLinkResponse createOrder(UserDTO user, BookingDTO booking, PaymentMethod paymentMethod) throws RazorpayException, StripeException {
