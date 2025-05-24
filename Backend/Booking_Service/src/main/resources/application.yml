@@ -3,7 +3,7 @@
 # - The yaml file had comments which are lost in the refactoring!
 
 server:
-  port: 9004
+    port: 9004
 
 spring:
     application:
@@ -12,6 +12,7 @@ spring:
         url: jdbc:mysql://localhost:3306/booking_db
         username: root
         password: aman@2005
+        driver-class-name: com.mysql.cj.jdbc.Driver
     jpa:
         hibernate:
             ddl-auto: update
