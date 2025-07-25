@@ -44,19 +44,19 @@ public class SalonController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<SalonDTO> updateSalons(@RequestBody SalonDTO salonDTO, @PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<SalonDTO> updateSalons(@RequestBody SalonDTO salonDTO, @PathVariable Long id) throws Exception {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(1L);;
         return new ResponseEntity<>(salonService.updateSalon(salonDTO,userDTO,id).toDTO(), HttpStatus.CREATED);
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<SalonDTO> getSalonById(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<SalonDTO> getSalonById(@PathVariable Long id) throws Exception {
         return ResponseEntity.ok(salonService.getSalonById(id).toDTO());
     }
     
     @GetMapping("/search")
-    public ResponseEntity<List<SalonDTO>> searchSalons(@RequestParam("city") String city) {
+    public ResponseEntity<List<SalonDTO>> searchSalons(@RequestParam String city) {
         return ResponseEntity.ok(salonService.searchSalonByCity(city).stream().map(salon-> salon.toDTO()).collect(Collectors.toList()));
     }
 

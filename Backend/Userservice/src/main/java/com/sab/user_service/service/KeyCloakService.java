@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import com.sab.user_service.payload.dto.Credentials;
 import com.sab.user_service.payload.dto.KeyCloakRole;
 import com.sab.user_service.payload.dto.KeyCloakUserDTO;
+import com.sab.user_service.payload.dto.KeycloakUserinfo;
 import com.sab.user_service.payload.dto.SignUpDTO;
 import com.sab.user_service.payload.dto.UserRequest;
 import com.sab.user_service.payload.response.TokenResponse;
@@ -30,7 +31,6 @@ public class KeyCloakService {
     private static final String KEYCLOAK_BASE_URL = "http://localhost:8080";
     private static final String KEYCLOAK_ADMIN_API = KEYCLOAK_BASE_URL+"/admin/realms/master/users";
     private static final String TOKEN_URL = KEYCLOAK_BASE_URL + "/realms/master/protocol/openid-connect/token";
-    private static final String KEYCLOAK_REALM = "master";
     private static final String KEYCLOAK_CLIENT_ID = "salon-booking-client";
     private static final String KEYCLOAK_CLIENT_SECRET = "wIIjnnv7gncck1MP1SxKqWlwdl6A6F3N";
     private static final String KEYCLOAK_GRANT_TYPE = "password";
@@ -140,6 +140,36 @@ public class KeyCloakService {
         }
         catch(Exception e){
             throw new Exception("Failed to assign role" + e.getMessage());
+        }
+    }
+
+    public KeycloakUserinfo fetchUserProfileByJwt(String token) throws Exception {
+        System.out.println("keycloak profile token "+ token);
+        String url = KEYCLOAK_BASE_URL+"/realms/master/protocol/openid-connect/userinfo";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization",  token);
+
+
+        // Create an HttpEntity with the headers
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        try {
+            // Send the GET request
+            ResponseEntity<KeycloakUserinfo> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    entity,
+                    KeycloakUserinfo.class
+            );
+
+            // Extract and return the first user object
+            return response.getBody();
+
+        } catch (Exception e) {
+            System.out.println("Failed to fetch user details: " + e.getMessage());
+            throw new Exception("Failed to fetch user details: " + e.getMessage());
         }
     }
 }

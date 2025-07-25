@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.sab.user_service.entity.User;
 import com.sab.user_service.exception.UserException;
+import com.sab.user_service.payload.dto.KeycloakUserinfo;
 import com.sab.user_service.repository.UserRepository;
+import com.sab.user_service.service.KeyCloakService;
 import com.sab.user_service.service.UserService;
 
 @Service
@@ -16,6 +18,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private KeyCloakService keyCloakService;
     
     @Override
     public User createUser(User user) {
@@ -56,5 +61,16 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    @Override
+    public User getUserByEmail(String email) throws UserException {
+        return userRepository.findByEmail(email).orElseThrow(()-> new UserException("user not found"));
+    }
+
+    @Override
+	public User getUserFromJwtToken(String jwt) throws Exception {
+		KeycloakUserinfo userinfo = keyCloakService.fetchUserProfileByJwt(jwt);
+        return userRepository.findByEmail(userinfo.getEmail()).orElseThrow(()-> new UserException("user not found"));
+	}
     
 }

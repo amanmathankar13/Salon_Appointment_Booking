@@ -3,12 +3,15 @@ package com.sab.user_service.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sab.user_service.entity.User;
+import com.sab.user_service.mapper.UserMapper;
+import com.sab.user_service.payload.dto.UserDTO;
 import com.sab.user_service.service.UserService;
 
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
@@ -33,6 +36,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody @Valid User user){
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
@@ -47,6 +53,17 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable Long id) throws Exception {
         return ResponseEntity.ok(userService.getUserById(id));
     }
+
+    @GetMapping("/api/users/profile")
+	public ResponseEntity<UserDTO> getUserFromJwtToken(
+			@RequestHeader("Authorization") String jwt) throws Exception {
+
+		User user = userService.getUserFromJwtToken(jwt);
+		UserDTO userDTO=userMapper.mapToDTO(user);
+
+
+		return new ResponseEntity<>(userDTO,HttpStatus.OK);
+	}
 
 
     @PutMapping("/update/{id}")
