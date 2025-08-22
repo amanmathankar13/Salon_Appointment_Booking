@@ -54,7 +54,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @GetMapping("/api/users/profile")
+    @GetMapping("/profile")
 	public ResponseEntity<UserDTO> getUserFromJwtToken(
 			@RequestHeader("Authorization") String jwt) throws Exception {
 

@@ -65,4 +65,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
+    @Override
+    public Category getCategoryByIdAndSalonId(Long id, Long salonId) throws Exception {
+        return categoryRepository.findByIdAndSalonId(id, salonId).orElseThrow(() -> new Exception("Category not found for the given salon"));
+    }
+
 }

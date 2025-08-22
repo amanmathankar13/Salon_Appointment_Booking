@@ -10,8 +10,12 @@ import com.sab.service_providing.payload.dto.CategoryDTO;
 import com.sab.service_providing.payload.dto.SalonDTO;
 import com.sab.service_providing.payload.dto.ServiceDTO;
 import com.sab.service_providing.service.ServicesProvidingService;
+import com.sab.service_providing.service.client.CategoryFeignClient;
+import com.sab.service_providing.service.client.SalonFeignClient;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -22,18 +26,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class SalonServiceProviderController {
     @Autowired
     private ServicesProvidingService serviceProviderService;
-
+    @Autowired
+    private SalonFeignClient salonFeignClient;
+    @Autowired
+    private CategoryFeignClient categoryFeignClient;
+    
     @PostMapping("/create")
-    public ResponseEntity<ServicesProviding> createService(@RequestBody ServiceDTO serviceDTO) {
-        SalonDTO salonDTO  = new SalonDTO();
-        salonDTO.setId(1L);
-        CategoryDTO categoryDTO = new CategoryDTO();
-        categoryDTO.setId(serviceDTO.getCategoryId());
+    public ResponseEntity<ServicesProviding> createService(@RequestBody ServiceDTO serviceDTO, @RequestHeader("Authorization") String jwt) throws Exception {
+        SalonDTO salonDTO  =  salonFeignClient.getByOwnerId(jwt).getBody();
+        CategoryDTO categoryDTO = categoryFeignClient.getCategoryByIdAndSalon(serviceDTO.getCategoryId(), salonDTO.getId()).getBody();
         return ResponseEntity.ok(serviceProviderService.createService(salonDTO, serviceDTO, categoryDTO));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ServicesProviding> putMethodName(@PathVariable Long id, @RequestBody ServicesProviding servicesProviding) throws Exception {
+    public ResponseEntity<ServicesProviding> updateService(@PathVariable Long id, @RequestBody ServicesProviding servicesProviding) throws Exception {
         return ResponseEntity.ok(serviceProviderService.updateService(id,servicesProviding));
     }
     

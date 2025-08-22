@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sab.salon_service.payload.dto.SalonDTO;
 import com.sab.salon_service.payload.dto.UserDTO;
 import com.sab.salon_service.service.SalonService;
+import com.sab.salon_service.service.clients.UserFeignClient;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,10 +33,15 @@ public class SalonController {
     @Autowired
     private SalonService salonService;
 
+    @Autowired
+    private UserFeignClient userFeignClient;
+
     @PostMapping("/create")
-    public ResponseEntity<SalonDTO> createSalons(@RequestBody SalonDTO salonDTO) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(1L);;
+    public ResponseEntity<SalonDTO> createSalons(@RequestBody SalonDTO salonDTO, @RequestHeader("Authorization") String jwt) throws Exception {
+        UserDTO userDTO = userFeignClient.getUserFromJwtToken(jwt).getBody();
+        if (userDTO == null) {
+            throw new Exception("User not found");
+        }
         return new ResponseEntity<>(salonService.createSalon(salonDTO,userDTO).toDTO(), HttpStatus.CREATED);
     }
 
@@ -44,9 +52,11 @@ public class SalonController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<SalonDTO> updateSalons(@RequestBody SalonDTO salonDTO, @PathVariable Long id) throws Exception {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(1L);;
+    public ResponseEntity<SalonDTO> updateSalons(@RequestBody SalonDTO salonDTO, @PathVariable Long id, @RequestHeader("Authorization") String jwt) throws Exception {
+        UserDTO userDTO = userFeignClient.getUserFromJwtToken(jwt).getBody();
+        if (userDTO == null) {
+            throw new Exception("User not found");
+        }
         return new ResponseEntity<>(salonService.updateSalon(salonDTO,userDTO,id).toDTO(), HttpStatus.CREATED);
     }
 
@@ -60,10 +70,15 @@ public class SalonController {
         return ResponseEntity.ok(salonService.searchSalonByCity(city).stream().map(salon-> salon.toDTO()).collect(Collectors.toList()));
     }
 
-    @GetMapping("/owner/{id}")
-    public String getByOwnerId(@PathVariable String param) {
-        return new String();
+    @GetMapping("/owner")
+    public ResponseEntity<SalonDTO> getByOwnerId(@RequestHeader("Authorization") String jwt) throws Exception {
+        UserDTO userDTO = userFeignClient.getUserFromJwtToken(jwt).getBody();
+        if (userDTO == null) {
+            throw new Exception("User not found");
+        }
+        return ResponseEntity.ok(salonService.getSalonByOwnerId(userDTO.getId()).toDTO());
     }
-    
+
+   
 
 }

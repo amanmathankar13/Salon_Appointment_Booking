@@ -13,4 +13,5 @@ public interface CategoryService {
     String deleteCategory(Long id, Long salonId) throws Exception;
     Category createCategory(Category category, SalonDTO salonDTO); // Salon Owner
     Category updateCategory(Category category, SalonDTO salonDTO, Long id) throws Exception;   // Salon Owner
+    Category getCategoryByIdAndSalonId(Long id, Long salonId) throws Exception; // Salon Owner
 }
