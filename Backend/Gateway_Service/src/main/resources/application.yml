@@ -23,6 +23,11 @@ spring:
           uri: lb://CATEGORY_SERVICE
           predicates:
             - Path=/category/**
+        
+        - id: NOTIFICATION_SERVICE
+          uri: lb://NOTIFICATION_SERVICE
+          predicates:
+            - Path=/notifications/**
 
         - id: SALONSERVICE
           uri: lb://SALONSERVICE
