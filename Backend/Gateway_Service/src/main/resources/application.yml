@@ -29,6 +29,11 @@ spring:
           predicates:
             - Path=/notifications/**
 
+        - id: REVIEW_SERVICE
+          uri: lb://REVIEW_SERVICE
+          predicates:
+            - Path=/reviews/**
+
         - id: SALONSERVICE
           uri: lb://SALONSERVICE
           predicates:
